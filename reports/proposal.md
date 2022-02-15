@@ -13,5 +13,5 @@ To get started, we have some online resources to follow, including a tutorial. W
 
 ## First Steps
 1. Do background reading on how a shell works. Here is one resource we will look at: https://www.cis.rit.edu/class/simg211/unixintro/Shell.html. We will also read Head First Chapter 4 *(Simrun and Vedaant)*.
-2. Follow a 3 step tutorial on writing a UNIX shell which is linked here https://indradhanush.github.io/blog/writing-a-unix-shell-part. By the end of this tutorial, we should have a basic idea of our approach, with maybe some starter files *(Vedaant)*.
+2. Follow a 3 step tutorial on writing a UNIX shell which is linked here https://indradhanush.github.io/blog/writing-a-unix-shell-part-1/. By the end of this tutorial, we should have a basic idea of our approach, with maybe some starter files *(Vedaant)*.
 3. Outline overarching code architecture for implementing the various commands. We will have a sketch/flow-chart of sorts by the time we have figured this out. *(Simrun)*
