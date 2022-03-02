@@ -4,8 +4,8 @@
 #include <readline/readline.h>
 #include <unistd.h>
 #include <sys/wait.h>
+#include "command_reader.h"
 
-char **get_input(char *);
 int cd(char *);
 
 int main() {
@@ -54,29 +54,6 @@ int main() {
     }
 
     return 0;
-}
-
-char **get_input(char *input) {
-    char **command = malloc(8 * sizeof(char *));
-    if (command == NULL) {
-        perror("malloc failed");
-        exit(1);
-    }
-
-    char *separator = " ";
-    char *parsed;
-    int index = 0;
-
-    parsed = strtok(input, separator);
-    while (parsed != NULL) {
-        command[index] = parsed;
-        index++;
-
-        parsed = strtok(NULL, separator);
-    }
-
-    command[index] = NULL;
-    return command;
 }
 
 int cd(char *path) {
