@@ -1,12 +1,19 @@
 /* Following tutorial at this link:
 https://indradhanush.github.io/blog/writing-a-unix-shell-part-1/ */
-
-#include <stdio.h>
 #include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
+#include <readline/readline.h>
 #include <unistd.h>
-#include <wait.h>
+#include <sys/wait.h>
+#include <signal.h>
 
-int **get_input(char *input){
+
+void sigint_handler(int signo) {
+    printf("Caught SIGINT\n");
+}
+
+char **get_input(char *input){
     // Seperating the input string by space to return an array of strings
     char **command = malloc(8 * sizeof(char *)); //double asterisk is a double pointer(pointer to a pointer)
     char *delimeter = " ";
@@ -36,19 +43,23 @@ int main(){
     pid_t child_pid; // pid_t datatype represents process IDs
     pid_t wait_result;
     int status_location;
-    char **input;
+    char *input;
     char **command;
 
     // The child PID is 0 for one of the cases because
     // it is calling the getpid on the child of the child which doesnt exist
 
+    
+    signal(SIGINT, sigint_handler);
     while(1){
 
         input = readline("shell> ");
         command = get_input(input);
 
-        if (strcmp("cd", command[0]) == 0){
-            cd(command[1]);
+        if (strcmp("cd", command[0]) == 0){            
+            if (cd(command[1]) < 0){
+                perror(command[1]);
+            };
             continue;
         }
 
