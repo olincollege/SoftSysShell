@@ -70,9 +70,9 @@ int main(){
             // command and the seconnd arguement is the command plus all the optioons
             // it always ends with a null character
             execvp(command[0], command); 
-            printf("CHILD Current PID: %d and Child PID: %d\n",
-                    getpid(), child_pid);
-            sleep(1);
+            // printf("CHILD Current PID: %d and Child PID: %d\n",
+                    // getpid(), child_pid);
+            // sleep(1);
         }
 
         // everything under 'else' is the parent process
@@ -81,11 +81,11 @@ int main(){
             // waits until child process is over to execute this.
             wait_result = waitpid(child_pid, &status_location, 0);
 
-            printf("PARENT Current PID: %d and Child PID: %d\n",
-                getpid(), child_pid);
+            // printf("PARENT Current PID: %d and Child PID: %d\n",
+                // getpid(), child_pid);
             // Prints the results from waitpid.
-            printf("Results of waitpid:\nReturn- %d, Status - %i \n", 
-                wait_result, status_location);         
+            // printf("Results of waitpid:\nReturn- %d, Status - %i \n", 
+                // wait_result, status_location);         
         }
         free(input);
         free(command);
