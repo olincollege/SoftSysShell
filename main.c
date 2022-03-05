@@ -7,6 +7,8 @@ https://indradhanush.github.io/blog/writing-a-unix-shell-part-1/ */
 #include <unistd.h>
 #include <sys/wait.h>
 #include "command_reader.h"
+// rm, sleep and ls are built in. cd is already implemented. only command 
+// left from MVP is history which needs to be implemeneted seperately.
 
 int cd(char *);
 
