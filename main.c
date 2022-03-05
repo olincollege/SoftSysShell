@@ -4,22 +4,29 @@ https://indradhanush.github.io/blog/writing-a-unix-shell-part-1/ */
 #include <stdio.h>
 #include <string.h>
 #include <readline/readline.h>
+#include <readline/history.h>
 #include <unistd.h>
 #include <sys/wait.h>
 #include "command_reader.h"
-// rm, sleep and ls are built in. cd is already implemented. only command 
+// rm, sleep and ls are system commands. cd is already implemented. only command 
 // left from MVP is history which needs to be implemeneted seperately.
 
 int cd(char *);
+
+// initialize the history variables
 
 int main() {
     char **command;
     char *input;
     pid_t child_pid;
     int stat_loc;
+    using_history();
 
     while (1) {
-        input = readline("unixsh> ");
+        input = readline("unixsh> ");        
+        // adding the input to history
+        add_history(input);
+        // seperate input into list of words divided by a space
         command = get_input(input);
 
         if (!command[0]) {      /* Handle empty commands */
@@ -28,11 +35,23 @@ int main() {
             continue;
         }
 
+
         if (strcmp(command[0], "cd") == 0) {
             if (cd(command[1]) < 0) {
                 perror(command[1]);
             }
+            /* Skip the fork */
+            continue;
+        }
 
+        if (strcmp(command[0], "history") == 0) {
+            register HIST_ENTRY **hist_list; // The keyword register hints to compiler that a given variable can be put in a register.
+            int i;
+            hist_list = history_list ();
+            for (i = 0; hist_list[i]; i++){
+                // printf("History length: %d\n", history_length);
+                printf ("%d: %s\n", i + history_base, hist_list[i] -> line); // is -> the equiv of .?
+            }
             /* Skip the fork */
             continue;
         }
