@@ -12,13 +12,14 @@ https://indradhanush.github.io/blog/writing-a-unix-shell-part-1/ */
 
 int cd(char *);
 
-// initialize the history variables
+
 
 int main() {
     char **command;
     char *input;
     pid_t child_pid;
     int stat_loc;
+    // initialize the history variables
     using_history();
 
     while (1) {
