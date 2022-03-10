@@ -11,7 +11,7 @@ https://indradhanush.github.io/blog/writing-a-unix-shell-part-1/ */
 // all MVP commands work
 
 int cd(char *);
-
+void send_output(char *input, char *path);
 
 
 int main() {
@@ -23,9 +23,13 @@ int main() {
     using_history();
 
     while (1) {
+        // try to implement exit, current working directory and redirect operators
+        
         input = readline("unixsh> ");        
         // adding the input to history
         add_history(input);
+        // check for redirection
+        int redirect = redirection_check(input);
         // seperate input into list of words divided by a space
         command = get_input(input);
 
@@ -82,3 +86,23 @@ int main() {
 int cd(char *path) {
     return chdir(path);
 }
+
+void send_output(char *input, char *path){
+    
+}
+
+int redirection_check(input){
+    char *out_append = strstr(input, ">>");
+    char *out = strstr(input, ">");
+    char *in = strstr(input, "<");
+
+    if (out_append != NULL){return 1;}
+    else if (out != NULL){return 2;}
+    else if (in != NULL){return 3;}
+    else {return 0;}
+    
+}
+
+// void parse_string(input){
+//     delim = ">"
+// }
