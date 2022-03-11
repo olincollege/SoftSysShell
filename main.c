@@ -8,6 +8,7 @@ https://indradhanush.github.io/blog/writing-a-unix-shell-part-1/ */
 #include <unistd.h>
 #include <sys/wait.h>
 #include "command_reader.h"
+#include "custom_commands.h"
 // all MVP commands work
 
 int cd(char *);
@@ -29,7 +30,7 @@ int main() {
         // adding the input to history
         add_history(input);
         // check for redirection
-        int redirect = redirection_check(input);
+        // int redirect = redirection_check(input);
         // seperate input into list of words divided by a space
         command = get_input(input);
 
@@ -67,8 +68,11 @@ int main() {
         }
 
         if (child_pid == 0) {
+            if (strcmp(command[0], "hype") == 0) {
+                hype_me();
+            }
             /* Never returns if the call is successful */
-            if (execvp(command[0], command) < 0) {
+            else if (execvp(command[0], command) < 0) {
                 perror(command[0]);
                 exit(1);
             }
@@ -91,17 +95,17 @@ void send_output(char *input, char *path){
     
 }
 
-int redirection_check(input){
-    char *out_append = strstr(input, ">>");
-    char *out = strstr(input, ">");
-    char *in = strstr(input, "<");
+// int redirection_check(input){
+//     char *out_append = strstr(input, ">>");
+//     char *out = strstr(input, ">");
+//     char *in = strstr(input, "<");
 
-    if (out_append != NULL){return 1;}
-    else if (out != NULL){return 2;}
-    else if (in != NULL){return 3;}
-    else {return 0;}
+//     if (out_append != NULL){return 1;}
+//     else if (out != NULL){return 2;}
+//     else if (in != NULL){return 3;}
+//     else {return 0;}
     
-}
+// }
 
 // void parse_string(input){
 //     delim = ">"

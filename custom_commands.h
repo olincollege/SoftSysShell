@@ -1,0 +1,1 @@
+void hype_me(void);
