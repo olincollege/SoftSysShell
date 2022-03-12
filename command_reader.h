@@ -1,1 +1,1 @@
-char **get_input(char *input);
+char **get_input(char *input,char *seperator);
