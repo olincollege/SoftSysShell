@@ -48,7 +48,6 @@ int main() {
             /* Skip the fork */
             continue;
         }
-
         if (strcmp(command[0], "history") == 0) {
             register HIST_ENTRY **hist_list; // The keyword register hints to compiler that a given variable can be put in a register.
             int i;
@@ -70,7 +69,11 @@ int main() {
         if (child_pid == 0) {
             if (strcmp(command[0], "hype") == 0) {
                 hype_me();
+            } else if (strcmp(command[0], "surprise") == 0)
+            {
+                game();
             }
+            
             /* Never returns if the call is successful */
             else if (execvp(command[0], command) < 0) {
                 perror(command[0]);
