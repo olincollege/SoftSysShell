@@ -10,7 +10,7 @@ int main(){
     
 
     char *ret = strchr(string, sep);
-    *ret++ = '\0';
+    printf("%s\n", ret);
   
     strcpy(first, string);
     printf("first: %s\n", first);

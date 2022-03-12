@@ -9,7 +9,8 @@ https://indradhanush.github.io/blog/writing-a-unix-shell-part-1/ */
 #include <sys/wait.h>
 #include <fcntl.h>
 #include "command_reader.h"
-
+#include "custom_commands.h"
+// all MVP commands work
 
 int cd(char *);
 void send_output(char *input, char *path);
@@ -24,6 +25,7 @@ int main() {
     char **command_and_file;
     char *file_name;
     char *input;
+    int saved_stdout;
     pid_t child_pid;
     int stat_loc;
     // initialize the history variables
@@ -40,7 +42,7 @@ int main() {
         // check for redirection
         int redirect = redirection_check(input);
         if (redirect){
-            int saved_stdout = dup(1);
+            saved_stdout = dup(1);
             switch (redirect){
                 case 1:
                     command_and_file = get_input(input, ">>"); 
@@ -93,8 +95,11 @@ int main() {
         }
 
         if (child_pid == 0) {
+            if (strcmp(command[0], "hype") == 0) {
+                hype_me();
+            }
             /* Never returns if the call is successful */
-            if (execvp(command[0], command) < 0) {
+            else if (execvp(command[0], command) < 0) {
                 perror(command[0]);
                 exit(1);
             }
