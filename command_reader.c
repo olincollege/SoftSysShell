@@ -3,14 +3,14 @@
 #include <string.h>
 #include <readline/readline.h>
 
-char **get_input(char *input) {
+char **get_input(char *input, char *separator) {
     char **command = malloc(8 * sizeof(char *));
     if (command == NULL) {
         perror("malloc failed");
         exit(1);
     }
 
-    char *separator = " ";
+    // char *separator = " ";
     char *parsed;
     int index = 0;
 
