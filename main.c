@@ -19,15 +19,21 @@ void redirect_in(char *file_name);
 void redirect_out(char *file_name);
 void redirect_out_append(char *file_name);
 char *trim(char *str);
+void print_history();
+void redirect_command(int redirect, int saved_stdout, char **command_and_file, char *input);
 
 int main() {
-    char **command;
-    char **command_and_file;
+    char **command;    
+    char **command_and_file;    
     char *file_name;
     char *input;
     int saved_stdout;
     pid_t child_pid;
     int stat_loc;
+    // allocation memory
+    command = malloc(20 * sizeof(command));
+    command_and_file = malloc(20 * sizeof(command_and_file));
+    input = malloc(20 * sizeof(input));
     // initialize the history variables
     using_history();
     
@@ -42,6 +48,7 @@ int main() {
         // check for redirection
         int redirect = redirection_check(input);
         if (redirect){
+            // redirect_command(redirect, saved_stdout, command_and_file, input);
             saved_stdout = dup(1);
             switch (redirect){
                 case 1:
@@ -61,6 +68,7 @@ int main() {
         } else {
             command = get_input(input, " ");
         } 
+        puts("here");
 
         if (!command[0]) {/* Handle empty commands */
             free(input);
@@ -77,13 +85,7 @@ int main() {
         }
 
         if (strcmp(command[0], "history") == 0) {
-            register HIST_ENTRY **hist_list; // The keyword register hints to compiler that a given variable can be put in a register.
-            int i;
-            hist_list = history_list ();
-            for (i = 0; hist_list[i]; i++){
-                printf ("%d: %s\n", i + history_base, hist_list[i] -> line); // is -> the equiv of .?
-            }
-            /* Skip the fork */
+            print_history();
             continue;
         }
 
@@ -99,7 +101,7 @@ int main() {
                 hype_me();
             }
             /* Never returns if the call is successful */
-            else if (execvp(command[0], command) < 0) {
+            if (execvp(command[0], command) < 0) {
                 perror(command[0]);
                 exit(1);
             }
@@ -189,3 +191,30 @@ char *trim(char *str){
     }
     return str;
 }
+
+void print_history(){
+    register HIST_ENTRY **hist_list; // The keyword register hints to compiler that a given variable can be put in a register.
+    int i;
+    hist_list = history_list ();
+    for (i = 0; hist_list[i]; i++){
+        printf ("%d: %s\n", i + history_base, hist_list[i] -> line); // is -> the equiv of .?
+    }
+}
+
+// void redirect_command(int redirect, int saved_stdout, char **command_and_file, char *input){
+//     saved_stdout = dup(1);
+//     switch (redirect) {
+//         case 1:
+//             command_and_file = get_input(input, ">>"); 
+//             redirect_out_append(trim(command_and_file[1]));                   
+//             break;
+//         case 2:
+//             command_and_file = get_input(input, ">");
+//             redirect_out(trim(command_and_file[1]));
+//             break;
+//         case 3:
+//             command_and_file = get_input(input, "<");
+//             redirect_out(trim(command_and_file[1]));
+//             break;
+//         }
+// }
