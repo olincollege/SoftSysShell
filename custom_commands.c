@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "custom_commands.h"
-#include "command_reader.h"
+#include "helper_commands.h"
 #include <unistd.h>
 
 void hype_me(){
