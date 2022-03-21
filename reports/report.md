@@ -15,15 +15,15 @@ Overall, we think that we have a pretty good sense of how to navigate these reso
 
 ## Implementation
 
-**History**
-The history commands allows the user to see all the previous commands entered within the shell. It also allows the user to use the up and down arrow keys to go through all the past commands. To implement this command, we used the GNU readline library. Through, this library, it is possible to store all the previous commands by using the add_history function. This is the function used to print out all the previous history.  
+**History:**
+The `history` commands allows the user to see all the previous commands entered within the shell. It also allows the user to use the up and down arrow keys to go through all the past commands. To implement this command, we used the GNU readline library. Through, this library, it is possible to store all the previous commands by using the add_history function. This is the function used to print out all the previous history.  
 ```
 void print_history(){
     register HIST_ENTRY **hist_list; // The keyword register hints to compiler that a given variable can be put in a register.
     int i;
     hist_list = history_list ();
     for (i = 0; hist_list[i]; i++){
-        printf ("%d: %s\n", i + history_base, hist_list[i] -> line); // is -> the equiv of .?
+        printf ("%d: %s\n", i + history_base, hist_list[i] -> line);
     }
 }
 ```
