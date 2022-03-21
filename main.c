@@ -96,6 +96,7 @@ int main() {
         }
 
         if (child_pid == 0) {
+            
             if (strcmp(command[0], "hype") == 0) {
                 hype_me();
             } else if (strcmp(command[0], "surprise") == 0)
