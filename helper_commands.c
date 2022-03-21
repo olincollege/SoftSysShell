@@ -47,20 +47,13 @@ void redirect_out_append(char *file_name){
     close(out_append);
 }
 
-void redirect_in(char *file_name){
-    int in = open(file_name, O_RDONLY);
-    dup2(in, 0);
-    close(in);
-}
 
 int redirection_check(char *input){
     char *out_append = strstr(input, ">>");
     char *out = strstr(input, ">");
-    char *in = strstr(input, "<");
 
     if (out_append != NULL){return 1;}
     else if (out != NULL){return 2;}
-    else if (in != NULL){return 3;}
     else {return 0;}    
 }
 

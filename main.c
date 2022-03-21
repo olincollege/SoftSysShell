@@ -37,10 +37,6 @@ int main() {
                     command_and_file = get_input(input, ">");
                     redirect_out(trim(command_and_file[1]));
                     break;
-                case 3:
-                    command_and_file = get_input(input, "<");
-                    redirect_out(trim(command_and_file[1]));
-                    break;
             }
             command = get_input(command_and_file[0], " ");
         } else {
