@@ -30,10 +30,10 @@ int main() {
     int saved_stdout;
     pid_t child_pid;
     int stat_loc;
-    // allocation memory
-    command = malloc(20 * sizeof(command));
-    command_and_file = malloc(20 * sizeof(command_and_file));
-    input = malloc(20 * sizeof(input));
+    // // allocation memory
+    // command = malloc(20 * sizeof(command));
+    // command_and_file = malloc(20 * sizeof(command_and_file));
+    // input = malloc(20 * sizeof(input));
     // initialize the history variables
     using_history();
     
