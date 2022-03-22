@@ -48,7 +48,7 @@ int main() {
             free(command);
             continue;
         }
-        
+
         /* Implement non-forked commands. */
 
         /* Implementation for cd. */
@@ -65,7 +65,7 @@ int main() {
             continue;
         }
 
-        /* Otherwise, create a fork for a large range of built-in commands. */
+        /* Otherwise, create a fork. */
         child_pid = fork();
         if (child_pid < 0) {
             perror("Fork failed");
