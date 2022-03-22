@@ -9,7 +9,7 @@ The goal of our project is to create a shell in C. As our MVP, we want to implem
 **Vedaant**: I want to take advantage of coding in C to implement programs that would best be done in a low-level language. Creating a shell will be a useful way for me to gain insight into UNIX operating systems while improving my C programming skills.
 
 ## Resources
-We have largely worked with [this tutorial](https://indradhanush.github.io/blog/writing-a-unix-shell-part-1/), written in three parts, to understand how to implement a shell in C. Through this, we have a gotten a sense of the basic workflow for implementing a shell command, and we have implemented all of our MVP commands of `ls`, `cd`, `sleep`, `history`, and `rm`. To supplement our understanding of what is actually going on in the code, we have found Chapter 4 of Head First C to be very helpful. Additionally, as we learn new features, we try to implement them in our code (such as organizing into code and header files and using a `Makefile` to compile).
+We largely worked with [this tutorial](https://indradhanush.github.io/blog/writing-a-unix-shell-part-1/), written in three parts, to understand how to implement a shell in C. Through this, we have a gotten a sense of the basic workflow for implementing a shell command, and we have implemented all of our MVP commands of `ls`, `cd`, `sleep`, `history`, and `rm`. To supplement our understanding of what is actually going on in the code, we have found Chapter 4 of Head First C to be very helpful. Additionally, as we learn new features, we try to implement them in our code (such as organizing into code and header files and using a `Makefile` to compile).
 
 Overall, we think that we have a pretty good sense of how to navigate these resources and find new ones as required. The tutorial linked to above was fairly simple to follow although it was a bit of a learning curve in terms of various C features and grasping the idea of forking. At this stage, we have a basic understanding of what our implementations of various command-line functions should look like in order to approach building new ones, or seeking out resources to do so.
 
@@ -38,7 +38,7 @@ This works by splitting the string into an array by using `strtok` from the stri
 
 ### **Forking:**
 
-The key new thing that we learned from this project was understanding forking. Essentially, when entering a command in a shell process, the command shouldn't be run in the current process since an incorrect command would crash the shell and isolation of processes is always desirable. Therefore, we create a *copy* of the current process, called a `fork`. The command is executed in this copy (called the 'child process'), and once it's done executing, the program exits the copy and returns to the original process (called the 'parent process').
+The key new thing that we learned from this project was understanding forking. Essentially, when entering a command in a shell process, the command shouldn't be run in the current process since an incorrect command would crash the shell and isolation of processes is always desirable. Therefore, we create a *copy* of the current process, called a `fork`. The command is executed in this copy (called the 'child process'), and once it's done executing, the program exits the child process and returns to the original process (called the 'parent process').
 
 Note that *not all commands are executed in the fork*. This includes `cd` and `history`, and these will be discussed shortly. 
 
@@ -47,7 +47,7 @@ A fork is quite simple to create -
 child_pid = fork();
 ```
 
-Once we're in the forked 'child' process, we can execute various commands - the easiest ones to execute are the Unix Binaries.
+Once we're in the forked (child) process, we can execute various commands - the easiest ones to execute are the Unix Binaries.
 
 ### **Unix Binaries:**
 ```
@@ -102,7 +102,7 @@ unixsh> history
 3: history
 unixsh>
 ```
-The `history` commands allows the user to see all the previous commands entered within the shell. The user can also use the up and down arrow keys to go through all the past commands. As discussed earlier the GNU readline library's `add_history` function was used to store all the previous commands. The follwing function is called to print out all the previous history when the `history` command is entered.  
+The `history` commands allows the user to see all the previous commands entered within the shell. The user can also use the up and down arrow keys to go through all the past commands. As discussed earlier the GNU readline library's `add_history` function is used to store all the previous commands. The follwing function is called to print out all the previous history when the `history` command is entered.  
 ```
 void print_history(){
     /* 'register' informs compiler that a variable can be put in a register */
@@ -115,7 +115,7 @@ void print_history(){
     }
 }
 ```
-**Redirect Output:**
+### **Redirect Output:**
 ```
 unixsh> ls -l > hello.txt
 unixsh> ls
@@ -158,24 +158,24 @@ void redirect_out_append(char *file_name){
 
 All the above functions can once again be found in the [helpers functions file](https://github.com/olincollege/SoftSysShell/blob/main/helper_commands.c).
 
-Finally in the main loop, we used a switch case to run the correct function based on the input. Even though there were only two options, we decided to use a switch case because this part of the code could be expanded to also redirect input which would be another case.
+Finally in the main loop, we use a `switch case` statement to run the correct function based on the input. Even though there are only two options, we decided to use a switch case because this part of the code could be expanded to also redirect input as another case that we could implement in the future.
 
 ```
-       int redirect = redirection_check(input);
-        if (redirect){
-            saved_stdout = dup(1);
-            switch (redirect){
-                case 1:
-                    command_and_file = get_input(input, ">>");
-                    redirect_out_append(trim(command_and_file[1]));                   
-                    break;
-                case 2:
-                    command_and_file = get_input(input, ">");
-                    redirect_out(trim(command_and_file[1]));
-                    break;
-            }
-            command = get_input(command_and_file[0], " ");
-        }
+int redirect = redirection_check(input);
+if (redirect){
+    saved_stdout = dup(1);
+    switch (redirect){
+        case 1:
+            command_and_file = get_input(input, ">>");
+            redirect_out_append(trim(command_and_file[1]));                   
+            break;
+        case 2:
+            command_and_file = get_input(input, ">");
+            redirect_out(trim(command_and_file[1]));
+            break;
+    }
+    command = get_input(command_and_file[0], " ");
+}
 ```
 You may have noticed the use of `trim`, which is an additional helper function we found [online](https://stackoverflow.com/questions/122616/how-do-i-trim-leading-trailing-whitespace-in-a-standard-way) to get rid of leading and trailing whitespaces.
 
@@ -191,7 +191,7 @@ Enter your name: Steve
 Hey Steve, you're the best!
 unixsh>
 ```
-This was a basic implementation of a command that asks for user input and prints out a statement, and it was used as a confidence test for forking that didn't involve calling `execvp`. 
+This is a basic implementation of a command that asks for user input and prints out a statement, and it was used as a confidence test for forking that didn't involve calling `execvp`. 
 ```
 void hype_me(){
     char name[100];
@@ -201,7 +201,7 @@ void hype_me(){
 }
 ```
 #### **surprise:**
-The output for this is, well, a ~surprise~... All we can tell you is that it involved downloading a previous SoftDes final project and sneakily executing it in Python with the following lines of code:
+The output for this is, well, a ~surprise~... All we can tell you is that it involved downloading one of our previous Software Design class final projects and sneakily executing it in Python with the following lines of code:
 ```
 char **my_game_command = malloc(3 * sizeof(char *));
 my_game_command[0] = "python3"; 
@@ -209,7 +209,7 @@ my_game_command[1] = "game/main.py";
 my_game_command[2] = NULL;
 if (execvp(my_game_command[0], my_game_command) {
 ```
-We used the `execvp` command and instead of supplying it with the output of `get_input`, we created our own array of strings to enter into it.
+We use the `execvp` command and instead of supplying it with the output of `get_input`, we create our own array of strings to enter into it.
 
 And that's our project! We learned a lot on the way much beyond what is visible in the code, and we had the satisfaction of implementing things we learned from class during the project. A quick example is how we organized all of our code and compiled it using a Makefile:
 
@@ -223,9 +223,9 @@ helper_commands.o: helper_commands.h helper_commands.c
 custom_command.o: custom_commands.h custom_commands.c
 	gcc custom_commands.c -c
 ```
-Here, we were able to compile our helper and custom commands separately before including it in the main file. It helped declutter the main function a lot, and helped us not recompile everything at once.
+Here, we were able to compile our helper and custom commands separately before including it in the main file. It helped declutter the main function a lot, and it let us not recompile everything for a change in just one file.
 
-An important design decision we made was to keep a simple flow for our code when implementing various commands. Using a series of `if` statements in the main loop, we ensured the following overall flow:
+An important design decision we made was to keep a simple flow for our code in the [main](https://github.com/olincollege/SoftSysShell/blob/main/main.c) loop when implementing various commands. Using a series of `if` statements in the main loop, we ensured the following overall flow:
 ```
 /* Read the user input. */
 input = readline("unixsh> ");
@@ -243,7 +243,11 @@ child_pid = fork();
 else if (execvp(command[0], command) < 0) {
 ...
 ```
-This logical, intentionally built structure allowed us to have a clear picture of where various commands in our shell were being implemente, and enabled us to add new commands wherever appropriate so that we can focus on isolated implementation. There are many ways to implement the various levels of commands, but this flow seemed the most appropriate to us.
+This logical, intentionally built structure allowed us to have a clear picture of where various commands in our shell were being implemented, and it enabled us to add new commands wherever appropriate so that we could focus on isolated implementation. There are many ways to implement the various levels of commands, but this flow seemed the most appropriate to us.
 
+## Reflection
+As we mentioned earlier, we feel that we actually hit the upper bound for this project - not only were we able to implement our MVP commands, we were able to understand forking and executing thoroughly enough to implement our own custom commands and redirection of output as well. To be honest, we were not expecting C libraries to contain functions such as `execvp` and `chdir` which significantly reduced the command implementation burden on us, yet we learned an important amount nonetheless.
+
+Regarding our learning goals, we collectively achieved our goals of gaining more experience with C through further practice in both familiar and unfamiliar areas of C. We learned how to work with a low-level language to execute relatively low-level process in a shell, and through forking and executing system commands, we got a much clearer idea of what goes 'under the hood' of a Unix operating system. Overall, we feel that this project served well for what we were hoping to learn from this project and the Software Systems course as a whole.
 
 [Link to Github](https://github.com/olincollege/SoftSysShell) 
