@@ -48,6 +48,8 @@ int main() {
             free(command);
             continue;
         }
+        
+        /* Implement non-forked commands. */
 
         /* Implementation for cd. */
         if (strcmp(command[0], "cd") == 0) {
